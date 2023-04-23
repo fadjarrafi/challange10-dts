@@ -69,6 +69,7 @@ func (m productHandler) UpdateProductById(c *gin.Context) {
 
 	if err != nil {
 		c.AbortWithStatusJSON(err.Status(), err)
+		// log.Println(err)
 		return
 	}
 
@@ -76,6 +77,7 @@ func (m productHandler) UpdateProductById(c *gin.Context) {
 
 	if err != nil {
 		c.AbortWithStatusJSON(err.Status(), err)
+		// log.Println(err)
 		return
 	}
 

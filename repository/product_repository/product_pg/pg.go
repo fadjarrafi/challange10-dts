@@ -7,16 +7,17 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 )
 
 const (
 	getProductByIdQuery = `
-		SELECT id, title, userId, description, createdAt, updatedAt from 'movies'
+		SELECT id, title, userId, description, createdAt, updatedAt from products
 		WHERE id = $1;
 	`
 
 	updateProductByIdQuery = `
-		UPDATE 'movies'
+		UPDATE products
 		SET title = $2,
 		description = $3
 		WHERE id = $1;
@@ -37,6 +38,7 @@ func (m *productPG) UpdateProductById(payload entity.Product) errs.MessageErr {
 	_, err := m.db.Exec(updateProductByIdQuery, payload.Id, payload.Title, payload.Description)
 
 	if err != nil {
+		// log.Println(err)
 		return errs.NewInternalServerError("something went wrong")
 	}
 
@@ -48,12 +50,14 @@ func (m *productPG) GetProductById(productId int) (*entity.Product, errs.Message
 
 	var product entity.Product
 
-	err := row.Scan(&product.Id, &product.Title, &product.Description, &product.UserId, &product.CreatedAt, &product.UpdatedAt)
+	err := row.Scan(&product.Id, &product.Title, &product.UserId, &product.Description, &product.CreatedAt, &product.UpdatedAt)
 
 	if err != nil {
 		if errors.Is(sql.ErrNoRows, err) {
 			return nil, errs.NewNotFoundError("product not found")
 		}
+
+		log.Println(err)
 
 		return nil, errs.NewInternalServerError("something went wrong")
 	}

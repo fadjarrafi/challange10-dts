@@ -30,6 +30,8 @@ func (m *productService) UpdateProductById(productId int, productRequest dto.New
 
 	if err != nil {
 		return nil, err
+		// log.Println(err)
+
 	}
 
 	payload := entity.Product{
@@ -42,6 +44,8 @@ func (m *productService) UpdateProductById(productId int, productRequest dto.New
 
 	if err != nil {
 		return nil, err
+		// log.Println(err)
+
 	}
 
 	response := dto.NewProductResponse{
